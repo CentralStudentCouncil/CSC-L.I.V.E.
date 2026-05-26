@@ -83,7 +83,7 @@
 
         .admin-header-text {
             min-width: 0;
-            padding: 1.5rem 1.75rem;
+            padding: 1.75rem;
         }
 
         #sidebarToggle {
@@ -149,7 +149,7 @@
 
         /* ===== VISUAL ENHANCEMENTS ===== */
         .admin-header {
-            background: linear-gradient(135deg, #f4b106 100%) !important;
+            background: linear-gradient(135deg, #FCD34D 0%, #FBBF24 100%) !important;
             border-bottom: 2px solid rgba(217, 119, 6, 0.2);
         }
 
@@ -237,31 +237,38 @@
         }
 
         @media (max-width: 640px) {
+            .admin-header {
+                padding: 0 !important;
+            }
+
             .admin-header-row {
-                min-height: 5.25rem;
+                align-items: stretch !important;
                 gap: 0 !important;
+                min-height: 5.35rem;
             }
 
             .admin-header-text {
-                padding: 0.85rem 0.95rem !important;
+                padding: 0.9rem 0.95rem !important;
             }
 
             .admin-header h2 {
-                font-size: 1.2rem !important;
-                line-height: 1.45rem !important;
-                margin-bottom: 0.2rem !important;
+                font-size: 1.25rem !important;
+                line-height: 1.55rem !important;
+                margin-bottom: 0.25rem !important;
             }
 
             .admin-header p {
-                font-size: 0.76rem !important;
-                line-height: 1.1rem !important;
+                font-size: 0.78rem !important;
+                line-height: 1.15rem !important;
             }
 
             #sidebarToggle {
                 flex: 0 0 auto;
+                align-self: stretch;
                 padding: 0 0.85rem !important;
                 font-size: 0.78rem !important;
                 white-space: nowrap;
+                border-radius: 0 !important;
             }
 
             .committee-sidebar .p-8 {
@@ -527,24 +534,42 @@
         }
 
         @media (max-width: 640px) {
+            :root {
+                --admin-header-height: 4.85rem;
+            }
+
             .admin-header-row {
-                display: flex !important;
                 align-items: stretch !important;
-                justify-content: space-between !important;
                 gap: 0 !important;
+                min-height: var(--admin-header-height) !important;
             }
 
             .admin-header-text {
-                flex: 1 1 auto !important;
-                min-width: 0 !important;
-                max-width: calc(100vw - 86px) !important;
+                padding: 0.75rem 0.85rem !important;
+            }
+
+            .admin-header h2 {
+                font-size: 1.08rem !important;
+                line-height: 1.32rem !important;
+                margin-bottom: 0.15rem !important;
+            }
+
+            .admin-header p {
+                font-size: 0.72rem !important;
+                line-height: 1rem !important;
+            }
+
+            .dashboard-header .admin-header-text {
+                max-width: calc(100vw - 140px) !important;
             }
 
             #sidebarToggle {
-                flex: 0 0 86px !important;
-                width: 86px !important;
-                min-width: 86px !important;
-                max-width: 86px !important;
+                align-self: stretch !important;
+                min-height: 100% !important;
+                padding: 0 0.75rem !important;
+                font-size: 0.72rem !important;
+                border-radius: 0 !important;
+                white-space: nowrap;
             }
 
             #overview .grid {
@@ -554,7 +579,40 @@
             #overview .p-6 {
                 padding: 0.9rem !important;
             }
+
+            #overview .dashboard-overview-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+                gap: 0.45rem !important;
+            }
+
+            #overview .dashboard-overview-card {
+                aspect-ratio: 1 / 1;
+                min-height: 0 !important;
+                padding: 0.45rem !important;
+            }
+
+            .overflow-x-auto {
+                overflow-x: visible !important;
+            }
+
+            .tab-content table {
+                table-layout: fixed !important;
+                min-width: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                font-size: 0.66rem !important;
+            }
+
+            .tab-content th,
+            .tab-content td {
+                padding: 0.42rem 0.32rem !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+                overflow-wrap: anywhere !important;
+            }
+
         }
+
 </style>
 </head>
 
@@ -565,7 +623,7 @@
         <div id="pageSidebar" class="committee-sidebar bg-white border-r border-gray-200 shadow-sm relative flex flex-col">
             <div class="p-8 border-b border-gray-200">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                    <div class="sidebar-logo-badge">
                         <img
                             src="Adventist_University_of_the_Philippines_logo.png"
                             alt="School Logo"
@@ -586,7 +644,6 @@
                     onclick="switchTab('overview')"
                     class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 bg-blue-600 text-white shadow-md"
                     data-tab="overview">
-                    <span class="text-xl">🏆</span>
                     <span class="font-medium">Overview</span>
                 </button>
 
@@ -594,7 +651,6 @@
                     onclick="switchTab('leaderboard')"
                     class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:bg-gray-100"
                     data-tab="leaderboard">
-                    <span class="text-xl">📊</span>
                     <span class="font-medium">Leaderboard</span>
                 </button>
 
@@ -602,7 +658,6 @@
                     onclick="switchTab('verifyAttendance')"
                     class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:bg-gray-100"
                     data-tab="verifyAttendance">
-                    <span class="text-xl">✅</span>
                     <span class="font-medium">Verify Worship Attendance</span>
                 </button>
 
@@ -610,7 +665,6 @@
                     onclick="switchTab('matches')"
                     class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:bg-gray-100"
                     data-tab="matches">
-                    <span class="text-xl">📅</span>
                     <span class="font-medium">Matches</span>
                 </button>
             </nav>
@@ -637,7 +691,6 @@
                         onclick="logout()"
                         class="shrink-0 bg-red-600 hover:bg-red-700 text-white flex items-center justify-center gap-1 px-3 py-2 rounded-lg font-medium"
                         title="Logout">
-                        <span>🚪</span>
                         <span class="hidden sm:inline lg:inline">Logout</span>
                     </button>
                 </div>
@@ -651,14 +704,18 @@
             
 
             <!-- Header -->
-            <div class="admin-header bg-yellow-400">
-                <div class="admin-header-row mb-0 flex items-center justify-between gap-4">
+            <div class="admin-header dashboard-header bg-yellow-400">
+                <div class="admin-header-row mb-0 flex justify-between">
+                    <div class="dashboard-header-brand" aria-hidden="true">
+                        <img src="Adventist_University_of_the_Philippines_logo.png" alt="">
+                    </div>
+
                     <div class="admin-header-text flex-1">
-                        <h2 id="pageTitle" class="text-3xl font-bold text-blue-900 mb-2">
+                        <h2 id="pageTitle" class="text-xl sm:text-3xl font-bold text-blue-900 mb-2">
                             Committee Dashboard
                         </h2>
 
-                        <p id="pageDesc" class="text-blue-800">
+                        <p id="pageDesc" class="text-blue-800 text-sm sm:text-base break-safe">
                             Monitor sports activities and team performance.
                         </p>
                     </div>
@@ -667,6 +724,7 @@
                         id="sidebarToggle"
                         type="button"
                         aria-expanded="false"
+                        aria-controls="pageSidebar"
                         onclick="toggleSidebar()"
                         class="inline-flex items-center justify-center gap-2 bg-blue-600 px-4 text-sm font-medium text-white lg:hidden shrink-0">
                         ☰ Menu
@@ -678,45 +736,85 @@
 
             <!-- Overview Tab -->
             <div id="overview" class="tab-content mt-8 ml-5 mr-5">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="dashboard-overview-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Teams</p>
-                                <p id="teamsCount" class="text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Total Teams</p>
+                                <p id="teamsCount" class="dashboard-overview-value text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Registered team records</p>
                             </div>
-                            <div class="text-4xl">👥</div>
                         </div>
                     </div>
 
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Participants</p>
-                                <p id="participantsCount" class="text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Registered Sports</p>
+                                <p id="committeeTotalSports" class="dashboard-overview-value text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Sports/game categories</p>
                             </div>
-                            <div class="text-4xl">👨‍🎓</div>
                         </div>
                     </div>
 
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Upcoming Matches</p>
-                                <p id="upcomingMatchesCount" class="text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Total Participants</p>
+                                <p id="participantsCount" class="dashboard-overview-value text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">All participant records</p>
                             </div>
-                            <div class="text-4xl">📅</div>
                         </div>
                     </div>
 
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Completed Matches</p>
-                                <p id="completedMatchesCount" class="text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Scheduled Matches</p>
+                                <p id="committeeTotalMatches" class="dashboard-overview-value text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">All match records</p>
                             </div>
-                            <div class="text-4xl">✓</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Upcoming Matches</p>
+                                <p id="upcomingMatchesCount" class="dashboard-overview-value text-3xl font-bold text-blue-700 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Status: Next</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Active Games</p>
+                                <p id="committeeActiveGames" class="dashboard-overview-value text-3xl font-bold text-red-700 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Status: Ongoing</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Completed Matches</p>
+                                <p id="completedMatchesCount" class="dashboard-overview-value text-3xl font-bold text-green-700 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Status: Done</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Match Days</p>
+                                <p id="committeeTotalDays" class="dashboard-overview-value text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Unique scheduled dates</p>
+                            </div>
                         </div>
                     </div>
 
@@ -731,13 +829,6 @@
                         <h2 class="text-2xl font-bold text-gray-800">
                             Leaderboard Rankings
                         </h2>
-
-                        <button
-                            type="button"
-                            id="refreshLeaderboard"
-                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
-                            Refresh
-                        </button>
                     </div>
 
                     <table class="w-full min-w-[700px]">
@@ -770,11 +861,6 @@
                         <h2 class="text-2xl font-bold text-gray-900 mb-2">
                             Verify Worship Attendance
                         </h2>
-
-                        <p class="text-sm text-gray-600 mb-6">
-                            Enter a student ID. The system will check today's attendance record.
-                            If the attendance status is <strong>Present</strong>, the player is allowed to play.
-                        </p>
 
                         <form id="verifyAttendanceForm" class="space-y-4">
                             <div>
@@ -917,9 +1003,9 @@
     <!-- History Modal -->
     <div
         id="historyModal"
-        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        class="dashboard-modal-overlay fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
 
-        <div class="bg-white rounded-2xl shadow-2xl w-[95%] max-w-3xl p-6 relative">
+        <div class="dashboard-modal-panel bg-white rounded-2xl shadow-2xl w-[95%] max-w-3xl p-6 relative">
             <button
                 type="button"
                 id="closeHistoryModal"
@@ -942,9 +1028,9 @@
     <!-- Schedule Match Modal -->
     <div
         id="matchModal"
-        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        class="dashboard-modal-overlay fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
 
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+        <div class="dashboard-modal-panel bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 id="matchModalTitle" class="text-xl font-semibold text-gray-900">Schedule Match</h2>
 
@@ -1078,9 +1164,9 @@
     <!-- Declare Match Result Modal -->
     <div
         id="resultModal"
-        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        class="dashboard-modal-overlay fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
 
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+        <div class="dashboard-modal-panel bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-semibold text-gray-900">Declare Winner Before Marking Done</h2>
 
@@ -1112,9 +1198,19 @@
                     </select>
                 </div>
 
-                <p class="text-sm text-gray-500">
-                    The losing team will be assigned automatically as the other team.
-                </p>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Best Player of the Game
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bestPlayerInput"
+                        required
+                        maxlength="120"
+                        placeholder="Enter the best player's name"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                </div>
 
                 <div class="flex justify-end space-x-2 pt-4">
                     <button
@@ -1139,9 +1235,9 @@
     <!-- Sport Filter Modal -->
     <div
         id="sportFilterModal"
-        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        class="dashboard-modal-overlay fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
 
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <div class="dashboard-modal-panel bg-white rounded-lg shadow-lg w-full max-w-md p-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-semibold text-gray-900">Filter Matches by Sport</h2>
 
@@ -1418,11 +1514,14 @@
 
             const teamsCount = document.getElementById("teamsCount");
             const participantsCount = document.getElementById("participantsCount");
+            const committeeTotalSports = document.getElementById("committeeTotalSports");
+            const committeeTotalMatches = document.getElementById("committeeTotalMatches");
             const upcomingMatchesCount = document.getElementById("upcomingMatchesCount");
+            const committeeActiveGames = document.getElementById("committeeActiveGames");
             const completedMatchesCount = document.getElementById("completedMatchesCount");
+            const committeeTotalDays = document.getElementById("committeeTotalDays");
 
             const leaderboardBody = document.getElementById("leaderboardBody");
-            const refreshLeaderboard = document.getElementById("refreshLeaderboard");
 
             const historyModal = document.getElementById("historyModal");
             const closeHistoryModal = document.getElementById("closeHistoryModal");
@@ -1469,6 +1568,7 @@
             const resultMatchId = document.getElementById("resultMatchId");
             const resultMatchSummary = document.getElementById("resultMatchSummary");
             const winnerTeamSelect = document.getElementById("winnerTeamSelect");
+            const bestPlayerInput = document.getElementById("bestPlayerInput");
 
             let activeStatusTab = "Next";
             let activeMatchScopeFilter = "mine";
@@ -1477,6 +1577,8 @@
             let matchesData = [];
             let pendingResultMatch = null;
             let currentUser = null;
+            let hasRenderedCommitteeLeaderboard = false;
+            let dashboardBackgroundTimer = null;
 
             const MATCH_PERMISSION_MESSAGE = "You do not have permission to manage this match.";
 
@@ -1487,6 +1589,39 @@
                     .replaceAll(">", "&gt;")
                     .replaceAll('"', "&quot;")
                     .replaceAll("'", "&#039;");
+            }
+
+            function applyDashboardBackgrounds(images) {
+                const savedImages = Array.isArray(images) ? images.filter(Boolean) : [];
+                window.clearInterval(dashboardBackgroundTimer);
+
+                if (savedImages.length === 0) {
+                    document.documentElement.style.removeProperty("--dashboard-photo-url");
+                    document.documentElement.style.removeProperty("--dashboard-photo-size");
+                    return;
+                }
+
+                let currentIndex = 0;
+                document.documentElement.style.setProperty("--dashboard-photo-size", "cover");
+                document.documentElement.style.setProperty("--dashboard-photo-url", `url("${savedImages[currentIndex]}")`);
+
+                if (savedImages.length > 1) {
+                    dashboardBackgroundTimer = window.setInterval(() => {
+                        currentIndex = (currentIndex + 1) % savedImages.length;
+                        document.documentElement.style.setProperty("--dashboard-photo-url", `url("${savedImages[currentIndex]}")`);
+                    }, 7000);
+                }
+            }
+
+            function loadSavedDashboardBackgrounds() {
+                try {
+                    const savedImages = JSON.parse(localStorage.getItem("dashboardBackgroundImages") || "[]");
+                    applyDashboardBackgrounds(savedImages);
+                } catch (error) {
+                    console.warn("Saved dashboard background images could not be loaded:", error.message || error);
+                    localStorage.removeItem("dashboardBackgroundImages");
+                    applyDashboardBackgrounds([]);
+                }
             }
 
             function formatDateTime(dateValue) {
@@ -1803,6 +1938,21 @@
                 return data;
             }
 
+            async function requestMatchDeleteApproval(match) {
+                const requestPayload = {
+                    delete_requested: true,
+                    delete_requested_at: new Date().toISOString(),
+                    delete_requested_by: getCurrentUserCreatorKey(),
+                    delete_requested_by_name: currentUser?.fullName || currentUser?.email || "Committee",
+                    delete_approved: false,
+                    delete_rejected: false,
+                    delete_rejected_at: null,
+                    delete_rejected_by: null
+                };
+
+                return updateMatchRecord(match.id, requestPayload);
+            }
+
             function getRoleLabel(roleValue) {
                 const normalizedRole = normalizeComparableValue(roleValue);
 
@@ -2002,33 +2152,87 @@
                 return count || 0;
             }
 
+            function setTextIfChanged(element, value) {
+                if (!element) {
+                    return;
+                }
+
+                const nextValue = String(value);
+                if (element.textContent !== nextValue) {
+                    element.textContent = nextValue;
+                }
+            }
+
+            async function loadOverviewMatches() {
+                const { data, error } = await supabase
+                    .from(MATCHES_TABLE)
+                    .select("match_time");
+
+                if (error) {
+                    console.error("Error loading overview match days:", error.message || error);
+                    return [];
+                }
+
+                return data || [];
+            }
+
+            function countUniqueMatchDays(matches) {
+                const uniqueDays = new Set();
+
+                (matches || []).forEach(match => {
+                    if (match.match_time) {
+                        uniqueDays.add(new Date(match.match_time).toLocaleDateString("en-CA"));
+                    }
+                });
+
+                return uniqueDays.size;
+            }
+
             async function loadOverviewCounts() {
                 const [
                     totalTeams,
+                    totalSports,
                     totalParticipants,
+                    totalMatches,
                     upcomingMatches,
+                    activeMatches,
                     completedMatches
                 ] = await Promise.all([
                     countRows(TEAMS_TABLE),
+                    countRows(SPORTS_TABLE),
                     countRows(PARTICIPANTS_TABLE),
+                    countRows(MATCHES_TABLE),
                     countMatchesByStatus("Next"),
+                    countMatchesByStatus("Ongoing"),
                     countMatchesByStatus("Done")
                 ]);
 
-                teamsCount.textContent = totalTeams;
-                participantsCount.textContent = totalParticipants;
-                upcomingMatchesCount.textContent = upcomingMatches;
-                completedMatchesCount.textContent = completedMatches;
+                const matches = await loadOverviewMatches();
+
+                setTextIfChanged(teamsCount, totalTeams);
+                setTextIfChanged(committeeTotalSports, totalSports);
+                setTextIfChanged(participantsCount, totalParticipants);
+                setTextIfChanged(committeeTotalMatches, totalMatches);
+                setTextIfChanged(upcomingMatchesCount, upcomingMatches);
+                setTextIfChanged(committeeActiveGames, activeMatches);
+                setTextIfChanged(completedMatchesCount, completedMatches);
+                setTextIfChanged(committeeTotalDays, countUniqueMatchDays(matches));
             }
 
-            async function loadLeaderboard() {
-                leaderboardBody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="text-center py-8 text-gray-500">
-                            Loading leaderboard from game history...
-                        </td>
-                    </tr>
-                `;
+            async function loadLeaderboard(options = {}) {
+                const { showLoading = false } = options;
+                const hasVisibleLeaderboard = hasRenderedCommitteeLeaderboard
+                    || leaderboardBody.querySelectorAll("tr[data-team-id]").length > 0;
+
+                if (showLoading && !hasVisibleLeaderboard) {
+                    leaderboardBody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="text-center py-8 text-gray-500">
+                                Loading leaderboard from game history...
+                            </td>
+                        </tr>
+                    `;
+                }
 
                 /*
                     Leaderboard source of truth:
@@ -2052,25 +2256,29 @@
 
                 if (teamsError) {
                     console.error("Leaderboard teams error:", teamsError.message || teamsError);
-                    leaderboardBody.innerHTML = `
-                        <tr>
-                            <td colspan="5" class="text-center py-8 text-red-500">
-                                Failed to load registered teams.
-                            </td>
-                        </tr>
-                    `;
+                    if (!hasVisibleLeaderboard) {
+                        leaderboardBody.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="text-center py-8 text-red-500">
+                                    Failed to load registered teams.
+                                </td>
+                            </tr>
+                        `;
+                    }
                     return;
                 }
 
                 if (historyError) {
                     console.error("Leaderboard game history error:", historyError.message || historyError);
-                    leaderboardBody.innerHTML = `
-                        <tr>
-                            <td colspan="5" class="text-center py-8 text-red-500">
-                                Failed to load game history. Please check the game_history table and RLS policies.
-                            </td>
-                        </tr>
-                    `;
+                    if (!hasVisibleLeaderboard) {
+                        leaderboardBody.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="text-center py-8 text-red-500">
+                                    Failed to load game history. Please check the game_history table and RLS policies.
+                                </td>
+                            </tr>
+                        `;
+                    }
                     return;
                 }
 
@@ -2250,6 +2458,7 @@
 
                     leaderboardBody.appendChild(row);
                 });
+                hasRenderedCommitteeLeaderboard = true;
             }
 
             async function openHistoryModalFunction(teamId, teamName) {
@@ -2687,6 +2896,14 @@
                         match_time,
                         location,
                         status,
+                        delete_requested,
+                        delete_requested_at,
+                        delete_requested_by,
+                        delete_requested_by_name,
+                        delete_approved,
+                        delete_approved_at,
+                        delete_rejected,
+                        delete_rejected_at,
                         timer_enabled,
                         timer_duration_seconds,
                         timer_started_at,
@@ -2776,6 +2993,11 @@
                     const lockedControlClasses = "bg-gray-300 hover:bg-gray-300 text-gray-500 cursor-not-allowed";
                     const timerFieldState = canManageCurrentMatch ? "" : "disabled";
                     const ownerNotice = buildMatchOwnerNotice(match, canManageCurrentMatch);
+                    const deleteRequestNotice = match.delete_requested ? `
+                        <div class="mb-4 bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
+                            Delete request pending admin approval${match.delete_requested_by_name ? ` by ${escapeHTML(match.delete_requested_by_name)}` : ""}.
+                        </div>
+                    ` : "";
 
                     const resultText = history?.result
                         || (history
@@ -2795,6 +3017,7 @@
                             </div>
 
                             ${ownerNotice}
+                            ${deleteRequestNotice}
 
                             <div class="mb-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
                                 <p class="text-xs text-gray-500 uppercase tracking-wide mb-2">Teams</p>
@@ -2830,6 +3053,11 @@
                                         <p class="text-red-700">Loser</p>
                                         <p class="font-semibold text-red-900">${escapeHTML(history?.loser_team_name || "-")}</p>
                                     </div>
+                                </div>
+
+                                <div class="mt-3 rounded-lg bg-white/70 border border-green-100 p-3 text-sm">
+                                    <p class="text-green-700">Best Player of the Game</p>
+                                    <p class="font-semibold text-green-900">${escapeHTML(history?.best_player || "-")}</p>
                                 </div>
 
                                 <p class="text-xs text-green-700 mt-3">
@@ -2926,6 +3154,7 @@
                         </div>
 
                         ${ownerNotice}
+                        ${deleteRequestNotice}
 
                         <div class="mb-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
@@ -3234,37 +3463,33 @@
                             return;
                         }
 
-                        const shouldDelete = confirm("Delete this match? This will also remove its game history record if one exists.");
+                        if (selectedMatch.delete_requested) {
+                            alert("This match already has a delete request waiting for admin approval.");
+                            await loadSavedMatches();
+                            return;
+                        }
+
+                        const shouldDelete = confirm("Request admin approval to delete this match?");
 
                         if (!shouldDelete) {
                             return;
                         }
 
                         this.disabled = true;
-                        this.textContent = "Deleting...";
+                        this.textContent = "Requesting...";
 
                         try {
-                            const { error: historyDeleteError } = await supabase
-                                .from(GAME_HISTORY_TABLE)
-                                .delete()
-                                .eq("match_id", matchId);
+                            await requestMatchDeleteApproval(selectedMatch);
 
-                            if (historyDeleteError) {
-                                throw historyDeleteError;
-                            }
-
-                            await deleteMatchRecord(matchId);
-
-                            alert("Match deleted successfully.");
+                            alert("Delete request sent. An admin must approve it before the match is removed.");
 
                             await Promise.all([
                                 loadSavedMatches(),
-                                loadOverviewCounts(),
-                                loadLeaderboard()
+                                loadOverviewCounts()
                             ]);
                         } catch (error) {
-                            console.error("Delete match error:", error.message || error);
-                            alert(error.message === MATCH_PERMISSION_MESSAGE ? MATCH_PERMISSION_MESSAGE : "Error deleting match.");
+                            console.error("Delete request error:", error.message || error);
+                            alert(error.message === MATCH_PERMISSION_MESSAGE ? MATCH_PERMISSION_MESSAGE : "Error sending delete request.");
                             await loadSavedMatches();
                         } finally {
                             this.disabled = false;
@@ -3384,9 +3609,16 @@
 
                 const submitButton = resultForm.querySelector('button[type="submit"]');
                 const winnerId = Number(winnerTeamSelect.value);
+                const bestPlayer = bestPlayerInput.value.trim();
 
                 if (!winnerId) {
                     alert("Please select the winning team.");
+                    return;
+                }
+
+                if (!bestPlayer) {
+                    alert("Please enter the best player of the game before marking this match as Done.");
+                    bestPlayerInput.focus();
                     return;
                 }
 
@@ -3425,6 +3657,7 @@
                         loser_team_name: loserName,
                         winner_points_awarded: winnerPointsAwarded,
                         loser_points_awarded: loserPointsAwarded,
+                        best_player: bestPlayer,
                         match_time: pendingResultMatch.match_time,
                         location: pendingResultMatch.location || "",
                         result: `${winnerName} won against ${loserName}`,
@@ -3625,8 +3858,6 @@
                 renderMatches(matchesData);
             });
 
-            refreshLeaderboard.addEventListener("click", loadLeaderboard);
-
             closeHistoryModal.addEventListener("click", closeHistoryModalFunction);
             historyModal.addEventListener("click", function (event) {
                 if (event.target === historyModal) {
@@ -3636,6 +3867,38 @@
 
             verifyAttendanceForm.addEventListener("submit", verifyWorshipAttendance);
             clearVerificationResult.addEventListener("click", clearVerifyResult);
+
+            let committeeRealtimeReloadTimer = null;
+            const pendingCommitteeReloads = {
+                overview: false,
+                leaderboard: false,
+                sports: false,
+                teams: false,
+                matches: false
+            };
+
+            function scheduleCommitteeRealtimeReload(tasks, delay = 250) {
+                Object.assign(pendingCommitteeReloads, tasks);
+                window.clearTimeout(committeeRealtimeReloadTimer);
+
+                committeeRealtimeReloadTimer = window.setTimeout(async () => {
+                    const reloads = [];
+
+                    if (pendingCommitteeReloads.overview) reloads.push(loadOverviewCounts());
+                    if (pendingCommitteeReloads.leaderboard) reloads.push(loadLeaderboard());
+                    if (pendingCommitteeReloads.sports) reloads.push(loadSportsForMatches());
+                    if (pendingCommitteeReloads.teams) reloads.push(loadRegisteredTeams());
+                    if (pendingCommitteeReloads.matches) reloads.push(loadSavedMatches());
+
+                    pendingCommitteeReloads.overview = false;
+                    pendingCommitteeReloads.leaderboard = false;
+                    pendingCommitteeReloads.sports = false;
+                    pendingCommitteeReloads.teams = false;
+                    pendingCommitteeReloads.matches = false;
+
+                    await Promise.all(reloads);
+                }, delay);
+            }
 
             openMatchModal.addEventListener("click", openMatchModalFunction);
             closeMatchModal.addEventListener("click", closeMatchModalFunction);
@@ -3650,6 +3913,8 @@
                 }
             });
             resultForm.addEventListener("submit", saveMatchResult);
+
+            loadSavedDashboardBackgrounds();
 
             await loadCurrentDashboardUser();
             updateMatchFilterSummary();
@@ -3675,14 +3940,12 @@
                         schema: "public",
                         table: TEAMS_TABLE
                     },
-                    async function () {
-                        await Promise.all([
-                            loadOverviewCounts(),
-                            loadLeaderboard(),
-                            loadRegisteredTeams(),
-                            loadSavedMatches()
-                        ]);
-                    }
+                    () => scheduleCommitteeRealtimeReload({
+                        overview: true,
+                        leaderboard: true,
+                        teams: true,
+                        matches: true
+                    })
                 )
                 .on(
                     "postgres_changes",
@@ -3691,7 +3954,7 @@
                         schema: "public",
                         table: PARTICIPANTS_TABLE
                     },
-                    loadOverviewCounts
+                    () => scheduleCommitteeRealtimeReload({ overview: true })
                 )
                 .on(
                     "postgres_changes",
@@ -3711,13 +3974,11 @@
                         schema: "public",
                         table: MATCHES_TABLE
                     },
-                    async function () {
-                        await Promise.all([
-                            loadOverviewCounts(),
-                            loadSavedMatches(),
-                            loadLeaderboard()
-                        ]);
-                    }
+                    () => scheduleCommitteeRealtimeReload({
+                        overview: true,
+                        matches: true,
+                        leaderboard: true
+                    })
                 )
                 .on(
                     "postgres_changes",
@@ -3726,12 +3987,10 @@
                         schema: "public",
                         table: GAME_HISTORY_TABLE
                     },
-                    async function () {
-                        await Promise.all([
-                            loadSavedMatches(),
-                            loadLeaderboard()
-                        ]);
-                    }
+                    () => scheduleCommitteeRealtimeReload({
+                        matches: true,
+                        leaderboard: true
+                    })
                 )
                 .on(
                     "postgres_changes",
@@ -3740,13 +3999,11 @@
                         schema: "public",
                         table: SPORTS_TABLE
                     },
-                    async function () {
-                        await Promise.all([
-                            loadSportsForMatches(),
-                            loadSavedMatches(),
-                            loadLeaderboard()
-                        ]);
-                    }
+                    () => scheduleCommitteeRealtimeReload({
+                        sports: true,
+                        matches: true,
+                        leaderboard: true
+                    })
                 )
                 .subscribe();
         });
