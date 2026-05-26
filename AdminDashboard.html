@@ -838,6 +838,44 @@
             }
         }
 
+        @media (max-width: 640px) {
+            .dashboard-header .admin-header-text {
+                max-width: calc(100vw - 140px) !important;
+            }
+
+            .responsive-table-card,
+            .overflow-x-auto {
+                overflow-x: visible !important;
+            }
+
+            .tab-content table {
+                table-layout: fixed !important;
+                min-width: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                font-size: 0.66rem !important;
+            }
+
+            .tab-content th,
+            .tab-content td {
+                padding: 0.42rem 0.32rem !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+                overflow-wrap: anywhere !important;
+            }
+
+            #overview .dashboard-overview-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+                gap: 0.45rem !important;
+            }
+
+            #overview .dashboard-overview-card {
+                aspect-ratio: 1 / 1;
+                min-height: 0 !important;
+                padding: 0.45rem !important;
+            }
+        }
+
     </style>
 
 </head>
@@ -849,7 +887,7 @@
         <div id="pageSidebar" class="admin-sidebar bg-white border-r border-gray-200 shadow-sm relative flex flex-col">
             <div class="p-8 border-b border-gray-200">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                    <div class="sidebar-logo-badge">
                         <img 
                             src="Adventist_University_of_the_Philippines_logo.png" 
                             alt="School Logo" 
@@ -870,7 +908,6 @@
                     onclick="switchTab('overview')" 
                     class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 bg-blue-600 text-white shadow-md" 
                     data-tab="overview">
-                    <span class="text-xl">🏆</span>
                     <span class="font-medium">Overview</span>
                 </button>
 
@@ -878,7 +915,6 @@
                     onclick="switchTab('teams')" 
                     class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:bg-gray-100" 
                     data-tab="teams">
-                    <span class="text-xl">👥</span>
                     <span class="font-medium">Manage Teams</span>
                 </button>
 
@@ -886,7 +922,6 @@
                     onclick="switchTab('games')" 
                     class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:bg-gray-100" 
                     data-tab="games">
-                    <span class="text-xl">📅</span>
                     <span class="font-medium">Manage Games</span>
                 </button>
 
@@ -894,7 +929,6 @@
                     onclick="switchTab('participants')" 
                     class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:bg-gray-100" 
                     data-tab="participants">
-                    <span class="text-xl">👨‍🎓</span>
                     <span class="font-medium">Participants</span>
                 </button>
 
@@ -902,7 +936,6 @@
                     onclick="switchTab('attendance')" 
                     class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:bg-gray-100" 
                     data-tab="attendance">
-                    <span class="text-xl">📝</span>
                     <span class="font-medium">Attendance Checker</span>
                 </button>
 
@@ -910,12 +943,16 @@
                     onclick="switchTab('settings')" 
                     class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:bg-gray-100" 
                     data-tab="settings">
-                    <span class="text-xl">⚙️</span>
                     <span class="font-medium">Settings</span>
                 </button>
             </nav>
 
             <div class="sidebar-footer absolute bottom-0 left-0 w-full p-4 border-t border-gray-200 bg-white">
+                <label class="dashboard-photo-button w-full mb-3">
+                    <span>Background Photos</span>
+                    <input id="dashboardBackgroundInput" type="file" accept="image/*" multiple>
+                </label>
+
                 <button 
                     onclick="logout()" 
                     class="w-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center space-x-2 py-2 rounded-lg font-medium">
@@ -928,8 +965,12 @@
 
         <main class="main-content flex-1 overflow-y-auto overflow-x-hidden">
             <!-- Header -->
-            <div class="admin-header bg-yellow-400">
+            <div class="admin-header dashboard-header bg-yellow-400">
                 <div class="admin-header-row mb-0 flex justify-between">
+                    <div class="dashboard-header-brand" aria-hidden="true">
+                        <img src="Adventist_University_of_the_Philippines_logo.png" alt="">
+                    </div>
+
                     <div class="admin-header-text flex-1">
                         <h2 id="pageTitle" class="text-xl sm:text-3xl font-bold text-blue-900 mb-2">
                             Dashboard Overview
@@ -963,109 +1004,102 @@
                         <p id="adminOverviewLastUpdated" class="text-xs text-gray-500">
                             Last updated: ...
                         </p>
-
-                        <button
-                            type="button"
-                            id="refreshOverview"
-                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
-                            Refresh Overview
-                        </button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-6">
+                <div class="dashboard-overview-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-6">
 
                     <!-- Total Teams -->
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Total Teams</p>
-                                <p id="adminTotalTeams" class="text-3xl font-bold text-gray-900 mt-2">...</p>
-                                <p class="text-xs text-gray-500 mt-1">Registered team records</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Total Teams</p>
+                                <p id="adminTotalTeams" class="dashboard-overview-value text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Registered team records</p>
                             </div>
 
                         </div>
                     </div>
 
                     <!-- Total Sports -->
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Registered Sports</p>
-                                <p id="adminTotalSports" class="text-3xl font-bold text-gray-900 mt-2">...</p>
-                                <p class="text-xs text-gray-500 mt-1">Sports/game categories</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Registered Sports</p>
+                                <p id="adminTotalSports" class="dashboard-overview-value text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Sports/game categories</p>
                             </div>
 
                         </div>
                     </div>
 
                     <!-- Total Participants -->
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Total Participants</p>
-                                <p id="adminTotalParticipants" class="text-3xl font-bold text-gray-900 mt-2">...</p>
-                                <p class="text-xs text-gray-500 mt-1">All participant records</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Total Participants</p>
+                                <p id="adminTotalParticipants" class="dashboard-overview-value text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">All participant records</p>
                             </div>
 
                         </div>
                     </div>
 
                     <!-- Total Matches -->
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Scheduled Matches</p>
-                                <p id="adminTotalMatches" class="text-3xl font-bold text-gray-900 mt-2">...</p>
-                                <p class="text-xs text-gray-500 mt-1">All match records</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Scheduled Matches</p>
+                                <p id="adminTotalMatches" class="dashboard-overview-value text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">All match records</p>
                             </div>
 
                         </div>
                     </div>
 
                     <!-- Upcoming Matches -->
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Upcoming Matches</p>
-                                <p id="adminUpcomingMatches" class="text-3xl font-bold text-blue-700 mt-2">...</p>
-                                <p class="text-xs text-gray-500 mt-1">Status: Next</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Upcoming Matches</p>
+                                <p id="adminUpcomingMatches" class="dashboard-overview-value text-3xl font-bold text-blue-700 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Status: Next</p>
                             </div>
 
                         </div>
                     </div>
 
                     <!-- Active Games -->
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Active Games</p>
-                                <p id="adminActiveGames" class="text-3xl font-bold text-red-700 mt-2">...</p>
-                                <p class="text-xs text-gray-500 mt-1">Status: Ongoing</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Active Games</p>
+                                <p id="adminActiveGames" class="dashboard-overview-value text-3xl font-bold text-red-700 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Status: Ongoing</p>
                             </div>
 
                         </div>
                     </div>
 
                     <!-- Completed Matches -->
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Completed Matches</p>
-                                <p id="adminCompletedMatches" class="text-3xl font-bold text-green-700 mt-2">...</p>
-                                <p class="text-xs text-gray-500 mt-1">Status: Done</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Completed Matches</p>
+                                <p id="adminCompletedMatches" class="dashboard-overview-value text-3xl font-bold text-green-700 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Status: Done</p>
                             </div>
 
                         </div>
                     </div>
 
                     <!-- Day -->
-                    <div class="p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md hover:shadow-lg transition-shadow rounded-lg">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="text-gray-600 text-sm font-medium">Match Days</p>
-                                <p id="adminTotalDays" class="text-3xl font-bold text-gray-900 mt-2">...</p>
-                                <p class="text-xs text-gray-500 mt-1">Unique scheduled dates</p>
+                                <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Match Days</p>
+                                <p id="adminTotalDays" class="dashboard-overview-value text-3xl font-bold text-gray-900 mt-2">...</p>
+                                <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Unique scheduled dates</p>
                             </div>
 
                         </div>
@@ -1073,29 +1107,29 @@
 
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-6">
-                    <div class="p-6 bg-white border-0 shadow-md rounded-lg">
-                        <p class="text-gray-600 text-sm font-medium">Approved Participants</p>
-                        <p id="adminApprovedParticipants" class="text-3xl font-bold text-green-700 mt-2">...</p>
-                        <p class="text-xs text-gray-500 mt-1">Status: Approved</p>
+                <div class="dashboard-overview-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-6">
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md rounded-lg">
+                        <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Approved Participants</p>
+                        <p id="adminApprovedParticipants" class="dashboard-overview-value text-3xl font-bold text-green-700 mt-2">...</p>
+                        <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Status: Approved</p>
                     </div>
 
-                    <div class="p-6 bg-white border-0 shadow-md rounded-lg">
-                        <p class="text-gray-600 text-sm font-medium">Pending Participants</p>
-                        <p id="adminPendingParticipants" class="text-3xl font-bold text-yellow-700 mt-2">...</p>
-                        <p class="text-xs text-gray-500 mt-1">Status: Pending</p>
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md rounded-lg">
+                        <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Pending Participants</p>
+                        <p id="adminPendingParticipants" class="dashboard-overview-value text-3xl font-bold text-yellow-700 mt-2">...</p>
+                        <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Status: Pending</p>
                     </div>
 
-                    <div class="p-6 bg-white border-0 shadow-md rounded-lg">
-                        <p class="text-gray-600 text-sm font-medium">Rejected Participants</p>
-                        <p id="adminRejectedParticipants" class="text-3xl font-bold text-red-700 mt-2">...</p>
-                        <p class="text-xs text-gray-500 mt-1">Status: Rejected</p>
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md rounded-lg">
+                        <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Rejected Participants</p>
+                        <p id="adminRejectedParticipants" class="dashboard-overview-value text-3xl font-bold text-red-700 mt-2">...</p>
+                        <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Status: Rejected</p>
                     </div>
 
-                    <div class="p-6 bg-white border-0 shadow-md rounded-lg">
-                        <p class="text-gray-600 text-sm font-medium">Today's Attendance</p>
-                        <p id="adminTodayAttendance" class="text-3xl font-bold text-blue-700 mt-2">...</p>
-                        <p class="text-xs text-gray-500 mt-1">Worship attendance checked today</p>
+                    <div class="dashboard-overview-card p-6 bg-white border-0 shadow-md rounded-lg">
+                        <p class="dashboard-overview-label text-gray-600 text-sm font-medium">Today's Attendance</p>
+                        <p id="adminTodayAttendance" class="dashboard-overview-value text-3xl font-bold text-blue-700 mt-2">...</p>
+                        <p class="dashboard-overview-note text-xs text-gray-500 mt-1">Worship attendance checked today</p>
                     </div>
                 </div>
 
@@ -1168,12 +1202,13 @@
                                 <th class="text-left py-3 px-4 font-semibold text-gray-700">Schedule</th>
                                 <th class="text-left py-3 px-4 font-semibold text-gray-700">Location</th>
                                 <th class="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">Delete Request</th>
                             </tr>
                         </thead>
 
                         <tbody id="overviewRecentMatchesBody">
                             <tr>
-                                <td colspan="5" class="py-4 px-4 text-gray-600">Loading latest matches...</td>
+                                <td colspan="6" class="py-4 px-4 text-gray-600">Loading latest matches...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1313,13 +1348,6 @@
                             class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
                             + Add Participant
                         </button>
-
-                        <button 
-                            type="button"
-                            id="refreshParticipants"
-                            class="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg font-medium transition">
-                            Refresh
-                        </button>
                     </div>
                 </div>
 
@@ -1438,11 +1466,11 @@
     </div>
 
     <!-- Add / Edit Team Modal -->
-    <div 
+        <div 
         id="teamModal"
-        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        class="dashboard-modal-overlay fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
 
-        <div class="modal-panel bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <div class="dashboard-modal-panel modal-panel bg-white rounded-lg shadow-lg w-full max-w-md p-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 id="teamModalTitle" class="text-xl font-semibold text-gray-900">
                     Add New Team
@@ -1495,11 +1523,11 @@
     </div>
 
     <!-- Add / Edit Sport Modal -->
-    <div 
+        <div 
         id="sportModal"
-        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        class="dashboard-modal-overlay fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
 
-        <div class="modal-panel bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <div class="dashboard-modal-panel modal-panel bg-white rounded-lg shadow-lg w-full max-w-md p-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 id="sportModalTitle" class="text-xl font-semibold text-gray-900">
                     Add New Sport
@@ -1593,11 +1621,11 @@
     </div>
 
     <!-- Add / Edit Participant Modal -->
-    <div 
+        <div 
         id="participantModal"
-        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        class="dashboard-modal-overlay fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
 
-        <div class="modal-panel bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+        <div class="dashboard-modal-panel modal-panel bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 id="participantModalTitle" class="text-xl font-semibold text-gray-900">
                     Add Participant
@@ -1759,7 +1787,7 @@
 
         function logout() {
             localStorage.removeItem('user');
-            window.location.href = 'index.html';
+            window.location.href = 'SignIn.html';
         }
 
         function openSidebar() {
@@ -1818,6 +1846,7 @@
             const MATCHES_TABLE = "scheduled_matches";
             const SPORTS_TABLE = "sports";
             const ATTENDANCE_TABLE = "attendance";
+            const GAME_HISTORY_TABLE = "game_history";
 
             const adminTotalTeams = document.getElementById("adminTotalTeams");
             const adminTotalSports = document.getElementById("adminTotalSports");
@@ -1832,7 +1861,7 @@
             const adminRejectedParticipants = document.getElementById("adminRejectedParticipants");
             const adminTodayAttendance = document.getElementById("adminTodayAttendance");
             const adminOverviewLastUpdated = document.getElementById("adminOverviewLastUpdated");
-            const refreshOverview = document.getElementById("refreshOverview");
+            const dashboardBackgroundInput = document.getElementById("dashboardBackgroundInput");
             const overviewMatchStatusBody = document.getElementById("overviewMatchStatusBody");
             const overviewAttendanceBody = document.getElementById("overviewAttendanceBody");
             const overviewRecentMatchesBody = document.getElementById("overviewRecentMatchesBody");
@@ -1874,8 +1903,6 @@
             const participantTeam = document.getElementById("participantTeam");
             const participantStatus = document.getElementById("participantStatus");
             const participantsTableBody = document.getElementById("participantsTableBody");
-            const refreshParticipants = document.getElementById("refreshParticipants");
-
             const attendanceForm = document.getElementById("attendanceForm");
             const attendanceStudentId = document.getElementById("attendanceStudentId");
             const attendanceResult = document.getElementById("attendanceResult");
@@ -1884,6 +1911,8 @@
             let teamsData = [];
             let sportsData = [];
             let participantsData = [];
+            let hasLoadedAdminOverview = false;
+            let dashboardBackgroundTimer = null;
 
             function escapeHTML(value) {
                 return String(value ?? "")
@@ -1892,6 +1921,77 @@
                     .replaceAll(">", "&gt;")
                     .replaceAll('"', "&quot;")
                     .replaceAll("'", "&#039;");
+            }
+
+            function applyDashboardBackgrounds(images) {
+                const savedImages = Array.isArray(images) ? images.filter(Boolean) : [];
+                window.clearInterval(dashboardBackgroundTimer);
+
+                if (savedImages.length === 0) {
+                    document.documentElement.style.removeProperty("--dashboard-photo-url");
+                    document.documentElement.style.removeProperty("--dashboard-photo-size");
+                    return;
+                }
+
+                let currentIndex = 0;
+                document.documentElement.style.setProperty("--dashboard-photo-size", "cover");
+                document.documentElement.style.setProperty("--dashboard-photo-url", `url("${savedImages[currentIndex]}")`);
+
+                if (savedImages.length > 1) {
+                    dashboardBackgroundTimer = window.setInterval(() => {
+                        currentIndex = (currentIndex + 1) % savedImages.length;
+                        document.documentElement.style.setProperty("--dashboard-photo-url", `url("${savedImages[currentIndex]}")`);
+                    }, 7000);
+                }
+            }
+
+            function loadSavedDashboardBackgrounds() {
+                try {
+                    const savedImages = JSON.parse(localStorage.getItem("dashboardBackgroundImages") || "[]");
+                    applyDashboardBackgrounds(savedImages);
+                } catch (error) {
+                    console.warn("Saved dashboard background images could not be loaded:", error.message || error);
+                    localStorage.removeItem("dashboardBackgroundImages");
+                    applyDashboardBackgrounds([]);
+                }
+            }
+
+            function resizeImageFile(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const image = new Image();
+                        image.onload = () => {
+                            const maxSide = 1600;
+                            const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+                            const canvas = document.createElement("canvas");
+                            canvas.width = Math.max(1, Math.round(image.width * scale));
+                            canvas.height = Math.max(1, Math.round(image.height * scale));
+
+                            const context = canvas.getContext("2d");
+                            context.drawImage(image, 0, 0, canvas.width, canvas.height);
+                            resolve(canvas.toDataURL("image/jpeg", 0.72));
+                        };
+                        image.onerror = reject;
+                        image.src = reader.result;
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            async function saveDashboardBackgroundFiles(files) {
+                const selectedFiles = Array.from(files || []).filter(file => file.type.startsWith("image/")).slice(0, 4);
+                if (selectedFiles.length === 0) return;
+
+                try {
+                    const images = await Promise.all(selectedFiles.map(resizeImageFile));
+                    localStorage.setItem("dashboardBackgroundImages", JSON.stringify(images));
+                    applyDashboardBackgrounds(images);
+                } catch (error) {
+                    console.error("Dashboard background image save failed:", error.message || error);
+                    alert("The selected image could not be used. Please try a smaller photo.");
+                }
             }
 
             function toNumber(value) {
@@ -2059,7 +2159,10 @@
 
             function setOverviewText(element, value) {
                 if (element) {
-                    element.textContent = value;
+                    const nextValue = String(value);
+                    if (element.textContent !== nextValue) {
+                        element.textContent = nextValue;
+                    }
                 }
             }
 
@@ -2115,6 +2218,14 @@
                     location,
                     status,
                     created_at,
+                    delete_requested,
+                    delete_requested_at,
+                    delete_requested_by,
+                    delete_requested_by_name,
+                    delete_approved,
+                    delete_approved_at,
+                    delete_rejected,
+                    delete_rejected_at,
                     sport:sports!scheduled_matches_sport_id_fkey(id, sport_name),
                     team_one:sports_leaderboard!scheduled_matches_team_one_fkey(team),
                     team_two:sports_leaderboard!scheduled_matches_team_two_fkey(team)
@@ -2213,7 +2324,7 @@
                 }
 
                 if (!matches.length) {
-                    renderEmptyRow(overviewRecentMatchesBody, 5, "No scheduled matches found.");
+                    renderEmptyRow(overviewRecentMatchesBody, 6, "No scheduled matches found.");
                     return;
                 }
 
@@ -2228,7 +2339,39 @@
                     return new Date(a.match_time || 0) - new Date(b.match_time || 0);
                 });
 
-                overviewRecentMatchesBody.innerHTML = sortedMatches.slice(0, 8).map(match => `
+                overviewRecentMatchesBody.innerHTML = sortedMatches.slice(0, 8).map(match => {
+                    const deleteRequestCell = match.delete_requested ? `
+                        <div class="space-y-2">
+                            <div>
+                                <span class="inline-flex px-2 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+                                    Pending
+                                </span>
+                                <p class="mt-1 text-xs text-gray-500">
+                                    ${escapeHTML(match.delete_requested_by_name || "Committee")}
+                                </p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-1">
+                                <button
+                                    type="button"
+                                    data-match-id="${match.id}"
+                                    class="approve-match-delete-btn px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold hover:bg-green-700">
+                                    Approve
+                                </button>
+
+                                <button
+                                    type="button"
+                                    data-match-id="${match.id}"
+                                    class="reject-match-delete-btn px-2 py-1 rounded bg-gray-700 text-white text-xs font-semibold hover:bg-gray-800">
+                                    Reject
+                                </button>
+                            </div>
+                        </div>
+                    ` : `
+                        <span class="text-xs text-gray-400">No request</span>
+                    `;
+
+                    return `
                     <tr class="border-b border-gray-100 hover:bg-gray-50">
                         <td class="py-3 px-4 font-medium text-gray-900">${escapeHTML(getOverviewSportName(match))}</td>
                         <td class="py-3 px-4 text-gray-600">
@@ -2243,8 +2386,88 @@
                                 ${escapeHTML(match.status || "Next")}
                             </span>
                         </td>
+                        <td class="py-3 px-4">${deleteRequestCell}</td>
                     </tr>
-                `).join("");
+                    `;
+                }).join("");
+
+                bindMatchDeleteApprovalButtons();
+            }
+
+            async function approveMatchDelete(matchId) {
+                const shouldApprove = confirm("Approve this delete request? This will permanently remove the match and its game history.");
+
+                if (!shouldApprove) {
+                    return;
+                }
+
+                try {
+                    const { error: historyDeleteError } = await supabase
+                        .from(GAME_HISTORY_TABLE)
+                        .delete()
+                        .eq("match_id", matchId);
+
+                    if (historyDeleteError) {
+                        throw historyDeleteError;
+                    }
+
+                    const { error: matchDeleteError } = await supabase
+                        .from(MATCHES_TABLE)
+                        .delete()
+                        .eq("id", matchId)
+                        .eq("delete_requested", true);
+
+                    if (matchDeleteError) {
+                        throw matchDeleteError;
+                    }
+
+                    alert("Delete request approved. Match removed.");
+                    await loadAdminOverviewCounts();
+                } catch (error) {
+                    console.error("Approve match delete error:", error.message || error);
+                    alert(error.message || "Failed to approve delete request.");
+                }
+            }
+
+            async function rejectMatchDelete(matchId) {
+                const shouldReject = confirm("Reject this delete request and keep the match?");
+
+                if (!shouldReject) {
+                    return;
+                }
+
+                try {
+                    const { error } = await supabase
+                        .from(MATCHES_TABLE)
+                        .update({
+                            delete_requested: false,
+                            delete_rejected: true,
+                            delete_rejected_at: new Date().toISOString(),
+                            delete_rejected_by: "admin"
+                        })
+                        .eq("id", matchId)
+                        .eq("delete_requested", true);
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    alert("Delete request rejected. Match kept.");
+                    await loadAdminOverviewCounts();
+                } catch (error) {
+                    console.error("Reject match delete error:", error.message || error);
+                    alert(error.message || "Failed to reject delete request.");
+                }
+            }
+
+            function bindMatchDeleteApprovalButtons() {
+                document.querySelectorAll(".approve-match-delete-btn").forEach(button => {
+                    button.addEventListener("click", () => approveMatchDelete(Number(button.dataset.matchId)));
+                });
+
+                document.querySelectorAll(".reject-match-delete-btn").forEach(button => {
+                    button.addEventListener("click", () => rejectMatchDelete(Number(button.dataset.matchId)));
+                });
             }
 
             function renderOverviewTeamSummary(teams, participants) {
@@ -2303,27 +2526,32 @@
                 `).join("");
             }
 
-            async function loadAdminOverviewCounts() {
-                [
-                    adminTotalTeams,
-                    adminTotalSports,
-                    adminTotalParticipants,
-                    adminTotalMatches,
-                    adminUpcomingMatches,
-                    adminActiveGames,
-                    adminCompletedMatches,
-                    adminTotalDays,
-                    adminApprovedParticipants,
-                    adminPendingParticipants,
-                    adminRejectedParticipants,
-                    adminTodayAttendance
-                ].forEach(element => setOverviewText(element, "Loading..."));
+            async function loadAdminOverviewCounts(options = {}) {
+                const { showLoading = false } = options;
+                const shouldShowLoading = showLoading && !hasLoadedAdminOverview;
 
-                renderEmptyRow(overviewMatchStatusBody, 3, "Loading match status summary...");
-                renderEmptyRow(overviewAttendanceBody, 4, "Loading attendance records...");
-                renderEmptyRow(overviewRecentMatchesBody, 5, "Loading latest matches...");
-                renderEmptyRow(overviewTeamSummaryBody, 2, "Loading team summary...");
-                renderEmptyRow(overviewSportsSummaryBody, 4, "Loading sports summary...");
+                if (shouldShowLoading) {
+                    [
+                        adminTotalTeams,
+                        adminTotalSports,
+                        adminTotalParticipants,
+                        adminTotalMatches,
+                        adminUpcomingMatches,
+                        adminActiveGames,
+                        adminCompletedMatches,
+                        adminTotalDays,
+                        adminApprovedParticipants,
+                        adminPendingParticipants,
+                        adminRejectedParticipants,
+                        adminTodayAttendance
+                    ].forEach(element => setOverviewText(element, "Loading..."));
+
+                    renderEmptyRow(overviewMatchStatusBody, 3, "Loading match status summary...");
+                    renderEmptyRow(overviewAttendanceBody, 4, "Loading attendance records...");
+                    renderEmptyRow(overviewRecentMatchesBody, 6, "Loading latest matches...");
+                    renderEmptyRow(overviewTeamSummaryBody, 2, "Loading team summary...");
+                    renderEmptyRow(overviewSportsSummaryBody, 4, "Loading sports summary...");
+                }
 
                 const [
                     teamsResult,
@@ -2417,6 +2645,7 @@
                 renderOverviewRecentMatches(matches);
                 renderOverviewTeamSummary(teams, participants);
                 renderOverviewSportsSummary(sports);
+                hasLoadedAdminOverview = true;
             }
 
             function openAddTeamModal() {
@@ -2898,13 +3127,15 @@
             }
 
             async function loadParticipants() {
-                participantsTableBody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="py-4 px-4 text-gray-600">
-                            Loading participants...
-                        </td>
-                    </tr>
-                `;
+                if (participantsData.length === 0) {
+                    participantsTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="py-4 px-4 text-gray-600">
+                                Loading participants...
+                            </td>
+                        </tr>
+                    `;
+                }
 
                 const { data, error } = await supabase
                     .from(PARTICIPANTS_TABLE)
@@ -3211,12 +3442,35 @@
             openParticipantModalButton.addEventListener("click", openAddParticipantModal);
             closeParticipantModalButton.addEventListener("click", closeParticipantModalFunction);
             cancelParticipantModal.addEventListener("click", closeParticipantModalFunction);
-            refreshParticipants.addEventListener("click", loadParticipants);
-
             attendanceForm.addEventListener("submit", checkAttendance);
 
-            if (refreshOverview) {
-                refreshOverview.addEventListener("click", loadAdminOverviewCounts);
+            let adminRealtimeReloadTimer = null;
+            const pendingAdminReloads = {
+                teams: false,
+                sports: false,
+                participants: false,
+                overview: false
+            };
+
+            function scheduleAdminRealtimeReload(tasks, delay = 250) {
+                Object.assign(pendingAdminReloads, tasks);
+                window.clearTimeout(adminRealtimeReloadTimer);
+
+                adminRealtimeReloadTimer = window.setTimeout(async () => {
+                    const reloads = [];
+
+                    if (pendingAdminReloads.teams) reloads.push(loadTeams());
+                    if (pendingAdminReloads.sports) reloads.push(loadSports());
+                    if (pendingAdminReloads.participants) reloads.push(loadParticipants());
+                    if (pendingAdminReloads.overview) reloads.push(loadAdminOverviewCounts());
+
+                    pendingAdminReloads.teams = false;
+                    pendingAdminReloads.sports = false;
+                    pendingAdminReloads.participants = false;
+                    pendingAdminReloads.overview = false;
+
+                    await Promise.all(reloads);
+                }, delay);
             }
 
             teamModal.addEventListener("click", function (event) {
@@ -3237,8 +3491,17 @@
                 }
             });
 
+            if (dashboardBackgroundInput) {
+                dashboardBackgroundInput.addEventListener("change", function () {
+                    saveDashboardBackgroundFiles(this.files);
+                    this.value = "";
+                });
+            }
+
+            loadSavedDashboardBackgrounds();
+
             await Promise.all([
-                loadAdminOverviewCounts(),
+                loadAdminOverviewCounts({ showLoading: true }),
                 loadTeams(),
                 loadSports(),
                 loadParticipants()
@@ -3255,12 +3518,7 @@
                         schema: "public",
                         table: TEAMS_TABLE
                     },
-                    async function () {
-                        await Promise.all([
-                            loadTeams(),
-                            loadAdminOverviewCounts()
-                        ]);
-                    }
+                    () => scheduleAdminRealtimeReload({ teams: true, overview: true })
                 )
                 .on(
                     "postgres_changes",
@@ -3269,13 +3527,7 @@
                         schema: "public",
                         table: PARTICIPANTS_TABLE
                     },
-                    async function () {
-                        await Promise.all([
-                            loadParticipants(),
-                            loadTeams(),
-                            loadAdminOverviewCounts()
-                        ]);
-                    }
+                    () => scheduleAdminRealtimeReload({ participants: true, teams: true, overview: true })
                 )
                 .on(
                     "postgres_changes",
@@ -3284,7 +3536,7 @@
                         schema: "public",
                         table: MATCHES_TABLE
                     },
-                    loadAdminOverviewCounts
+                    () => scheduleAdminRealtimeReload({ overview: true })
                 )
                 .on(
                     "postgres_changes",
@@ -3293,12 +3545,7 @@
                         schema: "public",
                         table: SPORTS_TABLE
                     },
-                    async function () {
-                        await Promise.all([
-                            loadSports(),
-                            loadAdminOverviewCounts()
-                        ]);
-                    }
+                    () => scheduleAdminRealtimeReload({ sports: true, overview: true })
                 )
                 .on(
                     "postgres_changes",
@@ -3307,7 +3554,7 @@
                         schema: "public",
                         table: ATTENDANCE_TABLE
                     },
-                    loadAdminOverviewCounts
+                    () => scheduleAdminRealtimeReload({ overview: true })
                 )
                 .subscribe();
         });
@@ -3315,4 +3562,3 @@
 
 </body>
 </html>
-
