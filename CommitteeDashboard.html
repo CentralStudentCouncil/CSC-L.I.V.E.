@@ -1342,7 +1342,7 @@
                 const user = localStorage.getItem('user');
 
                 if (!user) {
-                    window.location.href = 'SignIn.html';
+                    window.location.href = 'index.html';
                     return;
                 }
 
@@ -1352,12 +1352,12 @@
                     userData = JSON.parse(user);
                 } catch (error) {
                     localStorage.removeItem('user');
-                    window.location.href = 'SignIn.html';
+                    window.location.href = 'index.html';
                     return;
                 }
 
                 if (!userData || (userData.role !== 'committee' && userData.role !== 'admin')) {
-                    window.location.href = 'SignIn.html';
+                    window.location.href = 'index.html';
                 }
             }
 
@@ -1408,7 +1408,7 @@
                 }
 
                 localStorage.removeItem('user');
-                window.location.href = 'SignIn.html';
+                window.location.href = 'index.html';
             }
 
             function getStoredDashboardUserForBadge() {
@@ -1523,7 +1523,7 @@
                 const user = localStorage.getItem('user');
 
                 if (!user) {
-                    window.location.href = 'SignIn.html';
+                    window.location.href = 'index.html';
                     return;
                 }
 
@@ -1533,12 +1533,12 @@
                     userData = JSON.parse(user);
                 } catch (error) {
                     localStorage.removeItem('user');
-                    window.location.href = 'SignIn.html';
+                    window.location.href = 'index.html';
                     return;
                 }
 
                 if (!userData || (userData.role !== 'committee' && userData.role !== 'admin')) {
-                    window.location.href = 'SignIn.html';
+                    window.location.href = 'index.html';
                 }
             }
 
@@ -1833,7 +1833,7 @@
 
                     if (!resolvedUser || (resolvedUser.role !== "committee" && resolvedUser.role !== "admin")) {
                         localStorage.removeItem("user");
-                        window.location.href = "SignIn.html";
+                        window.location.href = "index.html";
                         return null;
                     }
 
@@ -3846,7 +3846,7 @@
 
                     if (!getCurrentUserCreatorKey()) {
                         alert("Unable to identify the logged-in user. Please sign in again.");
-                        window.location.href = "SignIn.html";
+                        window.location.href = "index.html";
                         return;
                     }
 
