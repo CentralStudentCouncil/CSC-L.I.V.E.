@@ -16,6 +16,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
+    <script src="dashboard-backgrounds/backgrounds.js" defer></script>
 
     <style>
         * {
@@ -948,11 +949,6 @@
             </nav>
 
             <div class="sidebar-footer absolute bottom-0 left-0 w-full p-4 border-t border-gray-200 bg-white">
-                <label class="dashboard-photo-button w-full mb-3">
-                    <span>Background Photos</span>
-                    <input id="dashboardBackgroundInput" type="file" accept="image/*" multiple>
-                </label>
-
                 <button 
                     onclick="logout()" 
                     class="w-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center space-x-2 py-2 rounded-lg font-medium">
@@ -1725,7 +1721,7 @@
             const user = localStorage.getItem('user');
 
             if (!user) {
-                window.location.href = 'index.html';
+                window.location.href = 'SignIn.html';
                 return;
             }
 
@@ -1735,12 +1731,12 @@
                 userData = JSON.parse(user);
             } catch (error) {
                 localStorage.removeItem('user');
-                window.location.href = 'index.html';
+                window.location.href = 'SignIn.html';
                 return;
             }
 
             if (!userData || userData.role !== 'admin') {
-                window.location.href = 'index.html';
+                window.location.href = 'SignIn.html';
             }
         }
 
@@ -1787,7 +1783,7 @@
 
         function logout() {
             localStorage.removeItem('user');
-            window.location.href = 'index.html';
+            window.location.href = 'SignIn.html';
         }
 
         function openSidebar() {
@@ -1861,7 +1857,6 @@
             const adminRejectedParticipants = document.getElementById("adminRejectedParticipants");
             const adminTodayAttendance = document.getElementById("adminTodayAttendance");
             const adminOverviewLastUpdated = document.getElementById("adminOverviewLastUpdated");
-            const dashboardBackgroundInput = document.getElementById("dashboardBackgroundInput");
             const overviewMatchStatusBody = document.getElementById("overviewMatchStatusBody");
             const overviewAttendanceBody = document.getElementById("overviewAttendanceBody");
             const overviewRecentMatchesBody = document.getElementById("overviewRecentMatchesBody");
@@ -1912,7 +1907,6 @@
             let sportsData = [];
             let participantsData = [];
             let hasLoadedAdminOverview = false;
-            let dashboardBackgroundTimer = null;
 
             function escapeHTML(value) {
                 return String(value ?? "")
@@ -1921,77 +1915,6 @@
                     .replaceAll(">", "&gt;")
                     .replaceAll('"', "&quot;")
                     .replaceAll("'", "&#039;");
-            }
-
-            function applyDashboardBackgrounds(images) {
-                const savedImages = Array.isArray(images) ? images.filter(Boolean) : [];
-                window.clearInterval(dashboardBackgroundTimer);
-
-                if (savedImages.length === 0) {
-                    document.documentElement.style.removeProperty("--dashboard-photo-url");
-                    document.documentElement.style.removeProperty("--dashboard-photo-size");
-                    return;
-                }
-
-                let currentIndex = 0;
-                document.documentElement.style.setProperty("--dashboard-photo-size", "cover");
-                document.documentElement.style.setProperty("--dashboard-photo-url", `url("${savedImages[currentIndex]}")`);
-
-                if (savedImages.length > 1) {
-                    dashboardBackgroundTimer = window.setInterval(() => {
-                        currentIndex = (currentIndex + 1) % savedImages.length;
-                        document.documentElement.style.setProperty("--dashboard-photo-url", `url("${savedImages[currentIndex]}")`);
-                    }, 7000);
-                }
-            }
-
-            function loadSavedDashboardBackgrounds() {
-                try {
-                    const savedImages = JSON.parse(localStorage.getItem("dashboardBackgroundImages") || "[]");
-                    applyDashboardBackgrounds(savedImages);
-                } catch (error) {
-                    console.warn("Saved dashboard background images could not be loaded:", error.message || error);
-                    localStorage.removeItem("dashboardBackgroundImages");
-                    applyDashboardBackgrounds([]);
-                }
-            }
-
-            function resizeImageFile(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        const image = new Image();
-                        image.onload = () => {
-                            const maxSide = 1600;
-                            const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
-                            const canvas = document.createElement("canvas");
-                            canvas.width = Math.max(1, Math.round(image.width * scale));
-                            canvas.height = Math.max(1, Math.round(image.height * scale));
-
-                            const context = canvas.getContext("2d");
-                            context.drawImage(image, 0, 0, canvas.width, canvas.height);
-                            resolve(canvas.toDataURL("image/jpeg", 0.72));
-                        };
-                        image.onerror = reject;
-                        image.src = reader.result;
-                    };
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
-            }
-
-            async function saveDashboardBackgroundFiles(files) {
-                const selectedFiles = Array.from(files || []).filter(file => file.type.startsWith("image/")).slice(0, 4);
-                if (selectedFiles.length === 0) return;
-
-                try {
-                    const images = await Promise.all(selectedFiles.map(resizeImageFile));
-                    localStorage.setItem("dashboardBackgroundImages", JSON.stringify(images));
-                    applyDashboardBackgrounds(images);
-                } catch (error) {
-                    console.error("Dashboard background image save failed:", error.message || error);
-                    alert("The selected image could not be used. Please try a smaller photo.");
-                }
             }
 
             function toNumber(value) {
@@ -3490,15 +3413,6 @@
                     closeParticipantModalFunction();
                 }
             });
-
-            if (dashboardBackgroundInput) {
-                dashboardBackgroundInput.addEventListener("change", function () {
-                    saveDashboardBackgroundFiles(this.files);
-                    this.value = "";
-                });
-            }
-
-            loadSavedDashboardBackgrounds();
 
             await Promise.all([
                 loadAdminOverviewCounts({ showLoading: true }),
