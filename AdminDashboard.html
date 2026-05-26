@@ -1721,7 +1721,7 @@
             const user = localStorage.getItem('user');
 
             if (!user) {
-                window.location.href = 'SignIn.html';
+                window.location.href = 'index.html';
                 return;
             }
 
@@ -1731,12 +1731,12 @@
                 userData = JSON.parse(user);
             } catch (error) {
                 localStorage.removeItem('user');
-                window.location.href = 'SignIn.html';
+                window.location.href = 'index.html';
                 return;
             }
 
             if (!userData || userData.role !== 'admin') {
-                window.location.href = 'SignIn.html';
+                window.location.href = 'index.html';
             }
         }
 
@@ -1783,7 +1783,7 @@
 
         function logout() {
             localStorage.removeItem('user');
-            window.location.href = 'SignIn.html';
+            window.location.href = 'index.html';
         }
 
         function openSidebar() {
