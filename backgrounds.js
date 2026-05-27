@@ -1,14 +1,10 @@
 (() => {
-    const dashboardBackgroundImages = [
-        "dashboard-backgrounds/56435184_2377398058971412_6905733492668104704_n.jpg",
-        "dashboard-backgrounds/469984691_918281827068965_7471383534469226798_n.jpg",
-        "dashboard-backgrounds/472760250_9329332677111214_8161660048911603548_n.jpg",
-        "dashboard-backgrounds/671018030_1284495603780917_8907957753481931746_n.jpg",
-        // Add more images here, for example:
-        // "dashboard-backgrounds/csc-cup-1.jpg",
-        // "dashboard-backgrounds/csc-cup-2.png",
-        // "dashboard-backgrounds/csc-cup-3.webp"
-    ];
+   const dashboardBackgroundImages = [
+  "56435184_2377398058971412_6905733492668104704_n.jpg",
+  "469984691_918281827068965_7471383534469226798_n.jpg",
+  "472760250_9329332677111214_8161660048911603548_n.jpg",
+  "671018030_1284495603780917_8907957753481931746_n.jpg",
+];
 
     let backgroundTimer = null;
 
