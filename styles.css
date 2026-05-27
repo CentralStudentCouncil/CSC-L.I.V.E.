@@ -28,14 +28,14 @@ body::after {
 body::before {
     background-image:
         linear-gradient(var(--dashboard-photo-overlay, rgba(248, 250, 252, 0.42)), var(--dashboard-photo-overlay, rgba(248, 250, 252, 0.42))),
-        var(--dashboard-photo-url-a, var(--dashboard-photo-url, url("dashboard-backgrounds/dashboard-background-slides.png")));
+        var(--dashboard-photo-url-a, var(--dashboard-photo-url, url("dashboard-background-slides.png")));
     opacity: 0.88;
 }
 
 body::after {
     background-image:
         linear-gradient(var(--dashboard-photo-overlay, rgba(248, 250, 252, 0.42)), var(--dashboard-photo-overlay, rgba(248, 250, 252, 0.42))),
-        var(--dashboard-photo-url-b, var(--dashboard-photo-url-a, var(--dashboard-photo-url, url("dashboard-backgrounds/dashboard-background-slides.png"))));
+        var(--dashboard-photo-url-b, var(--dashboard-photo-url-a, var(--dashboard-photo-url, url("dashboard-background-slides.png"))));
     opacity: 0;
 }
 
