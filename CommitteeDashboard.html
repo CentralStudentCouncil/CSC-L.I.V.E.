@@ -14,7 +14,7 @@
 
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="styles.css">
-        <script src="dashboard-backgrounds/backgrounds.js" defer></script>
+        <script src="backgrounds.js" defer></script>
         <style>
             * {
                 box-sizing: border-box;
@@ -1475,7 +1475,18 @@
                 }
             }
 
-            function switchTab(tabName) {
+            const COMMITTEE_ACTIVE_TAB_KEY = 'committeeDashboardActiveTab';
+            const COMMITTEE_SESSION_STARTED_KEY = 'committeeDashboardSessionStarted';
+
+            function getValidCommitteeTabName(tabName) {
+                return document.getElementById(tabName) && document.querySelector(`[data-tab="${tabName}"]`)
+                    ? tabName
+                    : 'overview';
+            }
+
+            function switchTab(tabName, options = {}) {
+                const selectedTabName = getValidCommitteeTabName(tabName);
+
                 document.querySelectorAll('.tab-content').forEach(tab => {
                     tab.classList.add('hidden');
                 });
@@ -1484,9 +1495,9 @@
                     btn.className = 'tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:bg-gray-100';
                 });
 
-                document.getElementById(tabName).classList.remove('hidden');
+                document.getElementById(selectedTabName).classList.remove('hidden');
 
-                const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
+                const activeBtn = document.querySelector(`[data-tab="${selectedTabName}"]`);
 
                 activeBtn.className = 'tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 bg-blue-600 text-white shadow-md';
 
@@ -1506,12 +1517,30 @@
                     about: 'Learn about the League Information & Viewing Engine.'
                 };
 
-                document.getElementById('pageTitle').textContent = titles[tabName];
-                document.getElementById('pageDesc').textContent = descs[tabName];
+                document.getElementById('pageTitle').textContent = titles[selectedTabName];
+                document.getElementById('pageDesc').textContent = descs[selectedTabName];
 
-                if (window.innerWidth < 1024) {
+                if (options.persist !== false) {
+                    localStorage.setItem(COMMITTEE_ACTIVE_TAB_KEY, selectedTabName);
+                }
+
+                if (options.closeSidebar !== false) {
                     closeSidebar();
                 }
+            }
+
+            function restoreCommitteeActiveTab() {
+                const isExistingDashboardSession = sessionStorage.getItem(COMMITTEE_SESSION_STARTED_KEY) === 'true';
+                const tabToShow = isExistingDashboardSession
+                    ? (localStorage.getItem(COMMITTEE_ACTIVE_TAB_KEY) || 'overview')
+                    : 'overview';
+
+                sessionStorage.setItem(COMMITTEE_SESSION_STARTED_KEY, 'true');
+
+                switchTab(tabToShow, {
+                    closeSidebar: false,
+                    persist: !isExistingDashboardSession
+                });
             }
 
             async function logout() {
@@ -1524,6 +1553,7 @@
                 }
 
                 localStorage.removeItem('user');
+                sessionStorage.removeItem(COMMITTEE_SESSION_STARTED_KEY);
                 window.location.href = 'index.html';
             }
 
@@ -1659,6 +1689,7 @@
             }
 
             checkAuth();
+            restoreCommitteeActiveTab();
             window.renderAccountIdentity();
         </script>
 
