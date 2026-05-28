@@ -630,6 +630,18 @@
             return normalizeApprovalStatus(profile?.approval_status) === "approved";
         }
 
+        function getApprovalBlockMessage(status) {
+            const normalizedStatus = normalizeApprovalStatus(status);
+            const statusMessages = {
+                hold: "Your account is on hold. Please contact an admin before signing in.",
+                suspended: "Your account is suspended. Please contact an admin before signing in.",
+                rejected: "Your account is rejected. Please contact an admin before signing in.",
+                pending: "Your account is pending admin approval. Please wait for an admin to accept it before signing in."
+            };
+
+            return statusMessages[normalizedStatus] || `Your account status is ${normalizedStatus}. Please contact an admin before signing in.`;
+        }
+
         async function ensurePendingProfile(user, fullName, mobileNumber, role) {
             if (!user?.id) {
                 throw new Error("Account was created, but the user profile could not be identified.");
@@ -720,9 +732,7 @@
                     await supabase.auth.signOut();
                     localStorage.removeItem("user");
 
-                    const approvalStatus = normalizeApprovalStatus(profile?.approval_status);
-                    const statusLabel = approvalStatus === "rejected" ? "rejected" : "pending admin approval";
-                    showAlert("warning", `Your account is ${statusLabel}. Please wait for an admin to approve it before signing in.`);
+                    showAlert("warning", getApprovalBlockMessage(profile?.approval_status));
                     return;
                 }
 
